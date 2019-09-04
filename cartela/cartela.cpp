@@ -1,7 +1,8 @@
 
 #include <iostream>
 #include <stdlib.h>
-#include < time.h>
+#include <time.h>
+#include <string>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ public:
 		// pra vida ficar mais fácil inicia todos os valores
 		// com um valor maior que o limite
 		for (int i=0; i<tamanho; i++) valores[i] = limite+1;
-		srand(time(NULL));
+		srand((int)time(NULL));
 		// aqui vamos preencher a cartela
 		// um loop simples: a cada vez retorna um
 		// numero aleatorio. Como na cartela do bingo
@@ -102,9 +103,7 @@ int main(int argc, char** argv)
 {
 	Cartela c("Cartela A", 20, 100);
 	c.mostra();
-
 	Cartela d("Bingo", 10, 50);
 	d.mostra();
-
 	return 0;
-}
+}	// end main()
