@@ -65,11 +65,14 @@ public:
 		}	// end for i
 	}	// end Cartela()
 
+
 	Cartela()
 	{
 		nome = "CARTELA";
 		tamanho = 25;
-		limite = 100;
+		limite = 75;
+		int base = 0;
+		int faixa = 15;
 		//cout << "Criando cartela padrao '" <<
 		//	nome <<
 		//	"' com " << tamanho << " valores entre 1 e " << limite << endl;
@@ -80,8 +83,6 @@ public:
 		// um loop simples: a cada vez retorna um
 		// numero aleatorio. Como na cartela do bingo
 		// os valores ficam em ordem crescente
-		int faixa = 20;
-		int base = 0;
 		for (int i = 0; i < tamanho;)
 		{	// total de valores = tamanho
 			v = rand() % faixa + 1; // um valor entre 1 e o limite da faixa
@@ -171,6 +172,7 @@ public:
 	{	// construtor padrao assume cinco cartelas
 		Cartela::init();	// inicia o gerador srand()
 		total_cartelas = 5;
+		nome = "Um bingo";
 		pCartelas = new (Cartela[total_cartelas]);
 		string		prefixo = "cartela";
 		string		nome = "";
@@ -185,6 +187,7 @@ public:
 	Bingo(int n_cartelas)
 	{	// construtor comum para n cartelas
 		Cartela::init();	// inicia o gerador srand()
+		nome = "Um bingo";
 		total_cartelas = n_cartelas;
 		pCartelas= new (Cartela[total_cartelas]);
 		string		prefixo = "cartela";
@@ -206,7 +209,10 @@ public:
 
 	void mostra()
 	{
-		cout << "\nBingo: jogo com '" << total_cartelas << "' cartelas" << endl;
+		cout <<
+			"\nBingo: jogo '" <<
+			nome <<
+			"' com '" << total_cartelas << "' cartelas" << endl;
 		for (int i = 1; i <= total_cartelas; i++)
 		{
 			cout << i << ": '" <<
@@ -220,12 +226,18 @@ public:
 
 	void mostra_detalhes()
 	{
-		cout << "\nBingo: jogo com '" << total_cartelas << "' cartelas" << endl;
+		cout << 
+			"\nBingo: jogo '" <<
+			nome <<
+			"' com '" << total_cartelas << "' cartelas" << endl;
 		for (int i = 1; i <= total_cartelas; i++)
 		{
 			(pCartelas + i - 1)->mostra();
 		}	// end for
 	}
+
+	void muda_nome(string n) { nome = n; }
+
 };	// end class Bingo
 
 int main(int argc, char** argv)
