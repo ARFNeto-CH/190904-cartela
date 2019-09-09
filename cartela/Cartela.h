@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
@@ -19,7 +20,13 @@ public:
 	~Cartela();
 
 	int			existe(unsigned int valor);
-	static int	init();
+
+	static int init()
+	{
+		srand((int)time(NULL));
+		return 0;
+	}	// end init()
+
 	int			mostra();
 	void		muda_nome(string n);
 };	// end class Cartela

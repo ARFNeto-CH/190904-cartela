@@ -1,4 +1,4 @@
-
+#pragma once
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
@@ -8,17 +8,7 @@
 using namespace std;
 
 
-class Cartela
-{
-public:
-	int		tamanho;
-	int		limite;
-	int*	valores;
-	string	nome;
-
-public:
-
-	Cartela(string n, int t, int l)
+	Cartela::Cartela(string n, int t, int l)
 	{
 		/*
 		Construtor com parâmetros
@@ -67,7 +57,7 @@ public:
 	}	// end Cartela()
 
 
-	Cartela()
+	Cartela::Cartela()
 	{
 		nome = "CARTELA";	// nome padrao
 		tamanho = 25;
@@ -111,7 +101,7 @@ public:
 	}	// end Cartela()
 
 
-	~Cartela()
+	Cartela::~Cartela()
 	{ 
 		cout << 
 			"Cartela: Destruindo cartela '" << 
@@ -123,7 +113,7 @@ public:
 	};
 
 
-	int existe(unsigned int valor)
+	int Cartela::existe(unsigned int valor)
 	{
 		for (int i = 0; i < tamanho; i++)
 		{
@@ -134,14 +124,7 @@ public:
 	}	// end existe()
 
 
-	static int init()
-	{
-		srand((int)time(NULL));
-		return 0;
-	}	// end init()
-
-
-	int mostra()
+	int Cartela::mostra()
 	{
 		cout <<
 			"\n    Cartela '" << nome <<
@@ -157,7 +140,4 @@ public:
 		return 0;
 	}	// end mostra()
 
-	void muda_nome(string n) { nome = n; }
-
-};	// end class Cartela
-
+	void Cartela::muda_nome(string n) { nome = n; }
