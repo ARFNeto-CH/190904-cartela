@@ -43,7 +43,7 @@ Bingo::Bingo(int n_cartelas)
 
 Bingo::~Bingo()
 {	// ao final libera a memoria
-	cout << "Bingo: Destruindo " << total_cartelas << " cartelas" << endl;
+	//cout << "Bingo: Destruindo " << total_cartelas << " cartelas" << endl;
 	delete[] pCartelas;
 }	// end destructor
 

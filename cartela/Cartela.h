@@ -28,5 +28,6 @@ public:
 	}	// end init()
 
 	int			mostra();
+	int			mostraXY(short X, short Y);
 	void		muda_nome(string n);
 };	// end class Cartela

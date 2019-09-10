@@ -1,8 +1,10 @@
 #pragma once
+#include <iomanip>
 #include <iostream>
 #include <stdlib.h>
-#include <time.h>
 #include <string>
+#include <time.h>
+#include "windows.h"
 #include "Cartela.h"
 
 using namespace std;
@@ -103,12 +105,12 @@ using namespace std;
 
 	Cartela::~Cartela()
 	{ 
-		cout << 
-			"Cartela: Destruindo cartela '" << 
-			nome <<
-			"' com " << tamanho <<
-			" valores entre 1 e " << limite
-			<< endl;
+		//cout << 
+		//	"Cartela: Destruindo cartela '" << 
+		//	nome <<
+		//	"' com " << tamanho <<
+		//	" valores entre 1 e " << limite
+		//	<< endl;
 		delete [] valores;
 	};
 
@@ -128,15 +130,60 @@ using namespace std;
 	{
 		cout <<
 			"\n    Cartela '" << nome <<
-			"' com " << tamanho << 
-			" valores. Limite: " <<	limite 
+			"' com " << tamanho <<
+			" valores. Limite: " << limite
 			<< endl;
-		for (int i=0; i<tamanho; i++)
+		for (int i = 0; i < tamanho; i++)
 		{
 			cout << valores[i] << "\t";
-			if (i%5 == 4) cout << endl;
+			if (i % 5 == 4) cout << endl;
 		}	// end for
 		cout << endl;
+		return 0;
+	}	// end mostra()
+
+
+	int Cartela::mostraXY(short X, short Y)
+	{	// mostra a cartela a partir da posição (x,y) na tela
+		// em principio igual a anterior, apenas posiciona o 
+		// cursor antes de imprimir cada linha
+		int		 i;
+		HANDLE	H = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_SCREEN_BUFFER_INFO info;
+		COORD	 coord;
+		coord.X = X;
+		coord.Y = Y;
+		// precisamos saber a cor orginal para restaurar a tela
+		GetConsoleScreenBufferInfo(H, &info);
+		SetConsoleCursorPosition(H, coord);
+		cout <<	"'" << nome << "'";
+		coord.X = X;
+		coord.Y++;
+		SetConsoleCursorPosition(H, coord);
+		for (i = 0; i < tamanho; i++)
+		{
+			// so pra testar vamos usar VERDE para os valores pares
+			// o que a gente quer e usar VERDE para os que ja sairam
+			// no bingo
+			if (i % 2 == 0)
+			{
+				SetConsoleTextAttribute(H, (FOREGROUND_GREEN));
+				cout << setfill('0') << setw(2) << valores[i] << "  ";
+				SetConsoleTextAttribute(H, (WORD)info.wAttributes);
+			}else
+			{
+				cout << setfill('0') << setw(2) << valores[i] << "  ";
+			}	// end if
+			if (i % 5 == 4)
+			{
+				coord.X = X;
+				coord.Y++;
+				SetConsoleCursorPosition(H, coord);
+			}	// end if
+		}	// end for
+		coord.X = X;
+		coord.Y++;
+		SetConsoleCursorPosition(H, coord);
 		return 0;
 	}	// end mostra()
 
