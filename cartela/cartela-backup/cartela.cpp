@@ -1,4 +1,5 @@
 #pragma once
+#include <iomanip>
 #include <iostream>
 #include <stdlib.h>
 #include <string>
@@ -19,7 +20,6 @@ using namespace std;
 
 		*/
 		nome = n;
-		hits = 0;
 		tamanho = t;
 		limite = l;
 		cout << "Criando cartela '" <<
@@ -66,7 +66,6 @@ using namespace std;
 		limite = 75;
 		int base = 0;
 		int faixa = 15;
-		hits = 0;
 		//cout << "Criando cartela padrao '" <<
 		//	nome <<
 		//	"' com " << tamanho << " valores entre 1 e " << limite << endl;
@@ -100,6 +99,7 @@ using namespace std;
 				if (valores[n] == (base +v )) break;
 			}	// end for n
 		}	// end for i
+
 	}	// end Cartela()
 
 
@@ -115,27 +115,24 @@ using namespace std;
 	};
 
 
-	short	Cartela::get_hits()
+	int Cartela::existe(unsigned int valor)
 	{
-		return hits;
-	};
+		for (int i = 0; i < tamanho; i++)
+		{
+			if (valores[i] == valor)
+				return valor;
+		}	// end for
+		return -1;
+	}	// end existe()
 
 
-	int		Cartela::set_numero()
-	{
-		hits += 1;
-		return hits;
-	}	// end marca_numero()
-
-
-	int		Cartela::mostra()
+	int Cartela::mostra()
 	{
 		cout <<
 			"\n    Cartela '" << nome <<
 			"' com " << tamanho <<
-			" valores. Limite: " << limite <<
-			" marcados: " << hits <<
-			endl;
+			" valores. Limite: " << limite
+			<< endl;
 		for (int i = 0; i < tamanho; i++)
 		{
 			cout << valores[i] << "\t";
@@ -146,30 +143,37 @@ using namespace std;
 	}	// end mostra()
 
 
-	int		Cartela::mostraXY(short X, short Y, short* cor)
+	int Cartela::mostraXY(short X, short Y)
 	{	// mostra a cartela a partir da posição (x,y) na tela
-		// em principio igual a anterior mostra(), apenas posiciona o 
+		// em principio igual a anterior, apenas posiciona o 
 		// cursor antes de imprimir cada linha
-		// usa as cores como marcadas no vetor 'cor'
 		int		 i;
 		HANDLE	H = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_SCREEN_BUFFER_INFO info;
 		COORD	 coord;
 		coord.X = X;
 		coord.Y = Y;
- 		SetConsoleCursorPosition(H, coord);
-		SetConsoleTextAttribute(H, cor[0]);
-		cout <<
-			"'" << nome << "' [" <<
-			setfill('0') << setw(3) << hits << "]";
+		// precisamos saber a cor orginal para restaurar a tela
+		GetConsoleScreenBufferInfo(H, &info);
+		SetConsoleCursorPosition(H, coord);
+		cout <<	"'" << nome << "'";
 		coord.X = X;
 		coord.Y++;
 		SetConsoleCursorPosition(H, coord);
-		// mostra valores[]
-		for (i=0; i<tamanho; i++)
+		for (i = 0; i < tamanho; i++)
 		{
-			SetConsoleTextAttribute (H, cor[valores[i]]);
-			cout << setfill('0') << setw(2) << valores[i] << "  ";
-			SetConsoleTextAttribute(H, cor[0]);
+			// so pra testar vamos usar VERDE para os valores pares
+			// o que a gente quer e usar VERDE para os que ja sairam
+			// no bingo
+			if (i % 2 == 0)
+			{
+				SetConsoleTextAttribute(H, (FOREGROUND_GREEN));
+				cout << setfill('0') << setw(2) << valores[i] << "  ";
+				SetConsoleTextAttribute(H, (WORD)info.wAttributes);
+			}else
+			{
+				cout << setfill('0') << setw(2) << valores[i] << "  ";
+			}	// end if
 			if (i % 5 == 4)
 			{
 				coord.X = X;
@@ -181,7 +185,6 @@ using namespace std;
 		coord.Y++;
 		SetConsoleCursorPosition(H, coord);
 		return 0;
-	}	// end mostraXY()
+	}	// end mostra()
 
-
-	void	Cartela::muda_nome(string n) { nome = n; }
+	void Cartela::muda_nome(string n) { nome = n; }

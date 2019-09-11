@@ -1,5 +1,4 @@
 #pragma once
-#include <iomanip>
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
@@ -9,14 +8,10 @@ using namespace std;
 
 class Cartela
 {
-private:
-	short		numeros_sorteados;
-	short		hits;
-
 public:
 	int		tamanho;
 	int		limite;
-	int*	valores;
+	int* valores;
 	string	nome;
 
 public:
@@ -24,10 +19,15 @@ public:
 	Cartela(string n, int t, int l);
 	~Cartela();
 
-	short	get_hits();
-	int		set_numero();
-	int		mostra();
-	int		mostraXY(short X, short Y, short* sorteio);
-	void	muda_nome(string n);
+	int			existe(unsigned int valor);
 
+	static int init()
+	{
+		srand((int)time(NULL));
+		return 0;
+	}	// end init()
+
+	int			mostra();
+	int			mostraXY(short X, short Y);
+	void		muda_nome(string n);
 };	// end class Cartela
